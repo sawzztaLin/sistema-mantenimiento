@@ -1,0 +1,31 @@
+{
+  "name": "sistema-mantenimiento",
+  "version": "1.0.0",
+  "description": "Sistema web de mantenimiento de equipos de cómputo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --env-file-if-exists=.env --watch server.js",
+    "db:init": "node --env-file-if-exists=.env src/db/init.js",
+    "db:reset": "node --env-file-if-exists=.env src/db/init.js --reset --demo",
+    "build:css": "tailwindcss -i src/styles/input.css -o public/css/app.css --minify",
+    "watch:css": "tailwindcss -i src/styles/input.css -o public/css/app.css --watch",
+    "test": "node --test test/"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.6.1",
+    "express": "^4.22.3",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.5"
+  }
+}
