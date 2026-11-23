@@ -78,6 +78,38 @@ Al iniciar por primera vez se crea la base de datos con los catálogos y, si `SE
 - Para que el proceso siga corriendo, usa un gestor como `pm2` o un servicio de systemd o Windows.
 - Las sesiones se guardan en memoria: al reiniciar el servidor, los usuarios vuelven a iniciar sesión.
 
+## Ejecutar con Docker
+
+Solo se necesita [Docker](https://docs.docker.com/get-docker/) (no hace falta instalar Node).
+
+```bash
+docker compose up -d --build     # construye la imagen y arranca
+# abrir http://localhost:3000  (admin@mantenimiento.local / admin123)
+
+docker compose logs -f           # ver registros
+docker compose down              # detener (los datos se conservan)
+docker compose down -v           # detener y BORRAR la base de datos
+```
+
+La base de datos SQLite se guarda en el volumen `datos`. Para cambiar el puerto, el secreto
+de sesión o la cuenta de administrador, crea un archivo `.env` junto a `docker-compose.yml`:
+
+```env
+PORT=8080
+SESSION_SECRET=un-secreto-largo-y-aleatorio
+ADMIN_PASSWORD=otra-contraseña
+```
+
+Para pasar la imagen ya construida a otra computadora sin internet:
+
+```bash
+docker save sistema-mantenimiento:latest -o sistema-mantenimiento.tar
+# en la otra computadora:
+docker load -i sistema-mantenimiento.tar
+docker run -d -p 3000:3000 -e COOKIE_SECURE=false -e SESSION_SECRET=algo-secreto \
+  -v mantenimiento-datos:/app/data --name sistema-mantenimiento sistema-mantenimiento:latest
+```
+
 ## Estructura
 
 ```

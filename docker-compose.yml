@@ -1,0 +1,23 @@
+# Uso:  docker compose up -d --build   ->  http://localhost:3000
+services:
+  app:
+    build: .
+    image: sistema-mantenimiento:latest
+    container_name: sistema-mantenimiento
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      # Cámbialo por uno propio (o defínelo en un archivo .env junto a este compose)
+      SESSION_SECRET: ${SESSION_SECRET:-cambia-este-secreto-por-uno-largo-y-aleatorio}
+      # Se sirve por HTTP dentro de la intranet
+      COOKIE_SECURE: "false"
+      DB_CLIENT: sqlite
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@mantenimiento.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      SEED_DEMO: ${SEED_DEMO:-true}
+    volumes:
+      - datos:/app/data   # la base de datos SQLite persiste aquí
+
+volumes:
+  datos:
